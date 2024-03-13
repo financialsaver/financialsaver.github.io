@@ -1,31 +1,6 @@
 /* General Styling */
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid #e7e7e7;
-    background-color: #f3f3f3;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+body {
     font-family: monospace;
-    font-size: 1.25em;
-    font-weight: bold;
-}
-
-li a:hover {
-    background-color: white;
 }
 
 div {
@@ -34,48 +9,49 @@ div {
 }
 
 h1 {
-    font-family: monospace;
     font-size: 3em;
 }
 
-label {
-    font-family: monospace;
-    font-size: 1.5em;
-    font-weight: bold;
+h2 {
+    font-size: 2.5em;
 }
 
-a {
-    font-family: monospace;
+h3 {
+    font-size: 2em;
+}
+
+h4 {
     font-size: 1.5em;
-    font-weight: bold;
+}
+
+p {
+    font-size: 1.5em;
+    text-align: right;
+}
+
+table {
+    border : 2px solid green;
+}
+
+td {
+    border : 2px solid green;
 }
 
 input {
-    font-family: monospace;
     font-size: 1.5em;
 }
 
 button {
-    font-family: monospace;
     font-size: 1.5em;
+    width: 6em;
+    height: 1.5em;
+    text-align: center;
 }
 
-table {
-    font-family: monospace;
-}
+/* Specific Styling */
 
-th, td {
-    padding-top: 0.75em;
-    padding-left: 1em;
-    padding-right: 1em;
-    font-size: 1em;
-}
-
-th {
-    background-color: #f3f3f3;
-    font-size: 1.5em;
-}
-
-tr:hover {
-    background-color: #f3f3f3;
+input[type=text] {
+    width: 6em;
+    height: 1.5em;
+    text-align: right;
 }
