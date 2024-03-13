@@ -4,6 +4,7 @@ function add_checking_bill() {
     var table_str = document.getElementById("c-table").innerHTML;
     const table_row_str = table_str.split("</tr>");
 
+    /* Creating the Output HTML */
     var tot_bills = 0;
     var output_html = "";
     for (let i = 0; i < table_row_str.length; i++) {
@@ -17,16 +18,32 @@ function add_checking_bill() {
             tot_bills += 1;
         }
         
-        output_html += table_row_str[i]
+        output_html += table_row_str[i];
         if (i < table_row_str.length - 1) {
             output_html += "</tr>";
         }
     }
+
+    /* Saving Input Values */
+    var c_input_elems = document.getElementsByClassName("c-input");
+    var c_input_ids = [];
+    var c_input_vals = [];
+    for (let i = 0; i < c_input_elems.length; i++) {
+        c_input_ids.push(c_input_elems[i].id);
+        c_input_vals.push(c_input_elems[i].value);
+    }
     
-    console.log(output_html);
+    /* Reseting to New HTML */
     document.getElementById("c-table").innerHTML = output_html;
+
+    /* Restoring Original Input Values */
+    for (let i = 0; i < c_input_ids.length; i++) {
+        document.getElementById(c_input_ids[i]).value = c_input_vals[i];
+    }
     
+    /* Restoring Event Listeners */
     document.getElementById("c-bil-add").onclick = add_checking_bill;
+    
     var c_input_elems = document.getElementsByClassName("c-input");
     for (let i = 0; i < c_input_elems.length; i++) {
         c_input_elems[i].addEventListener("change", update_savings_transfer);
@@ -34,16 +51,31 @@ function add_checking_bill() {
 }
 
 function update_savings_transfer() {
-    var tot_bal = document.getElementById("c-bal").innerHTML;
-    var tot_bal = parseFloat(tot_bal);
-    if (isNaN(tot_bal)) {
-        tot_bal = 0
+    var c_input_elems = document.getElementsByClassName("c-input");
+
+    var sav_tran = 0;
+    for (let i = 0; i < c_input_elems.length; i++) {
+        var new_amt = parseFloat(c_input_elems[i].value);
+        if (isNaN(new_amt)) {
+            new_amt = 0;
+        }
+        
+        if (c_input_elems[i].id == "c-bal") {
+            sav_tran += new_amt;
+        }
+        else {
+            sav_tran -= new_amt;
+        }
     }
 
-    document.getElementById("c-tran").innerHTML = tot_bal.toString()
+    if (sav_tran < 0) {
+        sav_tran = 0;
+    }
+
+    document.getElementById("c-tran").innerHTML = sav_tran.toString();
 }
 
-/* Setting Event to Function References */
+/* Setting Original Event Listeners */
 
 document.getElementById("c-bil-add").onclick = add_checking_bill;
 
