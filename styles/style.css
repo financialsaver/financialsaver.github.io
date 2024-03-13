@@ -29,14 +29,6 @@ p {
     text-align: right;
 }
 
-table {
-    border : 2px solid green;
-}
-
-td {
-    border : 2px solid green;
-}
-
 input {
     font-size: 1.5em;
 }
