@@ -51,7 +51,7 @@ function add_checking_bill() {
     for (let i = 0; i < table_row_str.length; i++) {
         if (table_row_str[i].includes("c-bil-add")) {
             output_html += "\n<tr>\n";
-            output_html += "\t<td><h4>Bill Amount</h4></td>\n";
+            output_html += "\t<td><h4>Bill #" + (tot_bills+1).toString() + "</h4></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"c-input\" id=\"c-bil-" + tot_bills.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
