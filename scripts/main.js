@@ -140,4 +140,4 @@ for (let i = 0; i < c_input_elems.length; i++) {
     c_input_elems[i].addEventListener("change", update_savings_transfer);
 }
 
-document.getElementById("s-bil-add").onclick = add_savings_bucket;
+document.getElementById("s-bkt-add").onclick = add_savings_bucket;
