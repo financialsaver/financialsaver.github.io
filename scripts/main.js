@@ -72,7 +72,7 @@ function update_savings_transfer() {
         sav_tran = 0;
     }
 
-    document.getElementById("c-tran").innerHTML = sav_tran.toString();
+    document.getElementById("c-tran").innerHTML = sav_tran.toFixed(2).toString();
 }
 
 /* Setting Original Event Listeners */
