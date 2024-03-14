@@ -23,14 +23,14 @@ function reset_table(type, html) {
 
     if (type == "c") {
         for (let i = 0; i < input_elems.length; i++) {
-            input_elems[i].addEventListener("change", update_savings_transfer);
+            input_elems[i].addEventListener("change", update_checking);
         }
 
         document.getElementById("c-bil-add").onclick = add_checking_bill;
     }
     else if (type == "s") {
         for (let i = 0; i < input_elems.length; i++) {
-            /*input_elems[i].addEventListener("change", update_savings_transfer);*/
+            input_elems[i].addEventListener("change", update_savings);
         }
 
         document.getElementById("s-bkt-add").onclick = add_savings_bucket;
@@ -68,31 +68,6 @@ function add_checking_bill() {
     reset_table("c", output_html);
 }
 
-function update_savings_transfer() {
-    var c_input_elems = document.getElementsByClassName("c-input");
-
-    var sav_tran = 0;
-    for (let i = 0; i < c_input_elems.length; i++) {
-        var new_amt = parseFloat(c_input_elems[i].value);
-        if (isNaN(new_amt)) {
-            new_amt = 0;
-        }
-        
-        if (c_input_elems[i].id == "c-bal") {
-            sav_tran += new_amt;
-        }
-        else {
-            sav_tran -= new_amt;
-        }
-    }
-
-    if (sav_tran < 0) {
-        sav_tran = 0;
-    }
-
-    document.getElementById("c-tran").innerHTML = sav_tran.toFixed(2).toString();
-}
-
 function add_savings_bucket() {
     var table_str = document.getElementById("s-table").innerHTML;
     const table_row_str = table_str.split("</tr>");
@@ -107,8 +82,7 @@ function add_savings_bucket() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-bal-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-rat-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-lim-" + tot_bkts.toString() + "\"></td>\n";
-            output_html += "\t<td><p id=\"s-bkt-rec-" + tot_bkts.toString() + "\">0</p></td>\n";
-            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-act-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><p id=\"s-bkt-tran-" + tot_bkts.toString() + "\">0</p></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-bkt")) {
@@ -138,8 +112,7 @@ function add_loan() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-bal-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-rat-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td></td>\n";
-            output_html += "\t<td><p id=\"s-lon-rec-" + tot_loans.toString() + "\">0</p></td>\n";
-            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-act-" + tot_loans.toString() + "\"></td>\n";
+            output_html += "\t<td><p id=\"s-lon-tran-" + tot_loans.toString() + "\">0</p></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-lon")) {
@@ -169,8 +142,7 @@ function add_investment() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-bal-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-rat-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-lim-" + tot_invs.toString() + "\"></td>\n";
-            output_html += "\t<td><p id=\"s-inv-rec-" + tot_invs.toString() + "\">0</p></td>\n";
-            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-act-" + tot_invs.toString() + "\"></td>\n";
+            output_html += "\t<td><p id=\"s-inv-tran-" + tot_invs.toString() + "\">0</p></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-inv")) {
@@ -182,8 +154,36 @@ function add_investment() {
             output_html += "</tr>";
         }
     }
-    
+
     reset_table("s", output_html);
+}
+
+function update_checking() {
+    var c_input_elems = document.getElementsByClassName("c-input");
+
+    var sav_tran = 0;
+    for (let i = 0; i < c_input_elems.length; i++) {
+        var new_amt = parseFloat(c_input_elems[i].value);
+        if (isNaN(new_amt)) {
+            new_amt = 0;
+        }
+        
+        if (c_input_elems[i].id == "c-bal") {
+            sav_tran += new_amt;
+        }
+        else {
+            sav_tran -= new_amt;
+        }
+    }
+
+    if (sav_tran < 0) {
+        sav_tran = 0;
+    }
+
+    document.getElementById("c-tran").innerHTML = sav_tran.toFixed(2).toString();
+}
+
+function update_savings() {
 }
 
 /* Setting Original Event Listeners */
@@ -192,9 +192,16 @@ document.getElementById("c-bil-add").onclick = add_checking_bill;
 
 var c_input_elems = document.getElementsByClassName("c-input");
 for (let i = 0; i < c_input_elems.length; i++) {
-    c_input_elems[i].addEventListener("change", update_savings_transfer);
+    c_input_elems[i].addEventListener("change", update_checking);
 }
+
+document.getElementById("c-tran").addEventListener("change", update_savings);
 
 document.getElementById("s-bkt-add").onclick = add_savings_bucket;
 document.getElementById("s-lon-add").onclick = add_loan;
 document.getElementById("s-inv-add").onclick = add_investment;
+
+var s_input_elems = document.getElementsByClassName("s-input");
+for (let i = 0; i < s_input_elems.length; i++) {
+    s_input_elems[i].addEventListener("change", update_savings);
+}
