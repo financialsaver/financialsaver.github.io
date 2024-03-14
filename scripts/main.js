@@ -149,7 +149,7 @@ function add_loan() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-act-" + tot_loans.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
-        else if (table_row_str[i].includes("s-bkt")) {
+        else if (table_row_str[i].includes("s-lon")) {
             tot_loans += 1;
         }
         
@@ -177,7 +177,7 @@ function add_loan() {
     }
     
     /* Restoring Event Listeners */
-    document.getElementById("s-lon-add").onclick = add_savings_bucket;
+    document.getElementById("s-lon-add").onclick = add_loan;
     
     /*
     var s_input_elems = document.getElementsByClassName("s-input");
