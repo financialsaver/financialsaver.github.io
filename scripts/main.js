@@ -1,4 +1,45 @@
-/* Defining Functions */
+/* Defining Sub Functions */
+
+function reset_table(type, html) {
+    /* Saving Input Values */
+    var input_elems = document.getElementsByClassName(type + "-input");
+    var input_ids = [];
+    var input_vals = [];
+    for (let i = 0; i < input_elems.length; i++) {
+        input_ids.push(input_elems[i].id);
+        input_vals.push(input_elems[i].value);
+    }
+
+    /* Reseting HTML Table */
+    document.getElementById(type + "-table").innerHTML = html;
+
+    /* Restoring Input Values */
+    for (let i = 0; i < input_ids.length; i++) {
+        document.getElementById(input_ids[i]).value = input_vals[i];
+    }
+
+    /* Restoring Event Listeners */
+    var input_elems = document.getElementsByClassName(type + "-input");
+
+    if (type == "c") {
+        for (let i = 0; i < input_elems.length; i++) {
+            input_elems[i].addEventListener("change", update_savings_transfer);
+        }
+
+        document.getElementById("c-bil-add").onclick = add_checking_bill;
+    }
+    else if (type == "s") {
+        for (let i = 0; i < input_elems.length; i++) {
+            /*input_elems[i].addEventListener("change", update_savings_transfer);*/
+        }
+
+        document.getElementById("s-bkt-add").onclick = add_savings_bucket;
+        document.getElementById("s-lon-add").onclick = add_loan;
+        document.getElementById("s-inv-add").onclick = add_investment;
+    }
+}
+
+/* Defining Event Functions */
 
 function add_checking_bill() {
     var table_str = document.getElementById("c-table").innerHTML;
@@ -24,30 +65,7 @@ function add_checking_bill() {
         }
     }
 
-    /* Saving Input Values */
-    var c_input_elems = document.getElementsByClassName("c-input");
-    var c_input_ids = [];
-    var c_input_vals = [];
-    for (let i = 0; i < c_input_elems.length; i++) {
-        c_input_ids.push(c_input_elems[i].id);
-        c_input_vals.push(c_input_elems[i].value);
-    }
-    
-    /* Reseting to New HTML */
-    document.getElementById("c-table").innerHTML = output_html;
-
-    /* Restoring Original Input Values */
-    for (let i = 0; i < c_input_ids.length; i++) {
-        document.getElementById(c_input_ids[i]).value = c_input_vals[i];
-    }
-    
-    /* Restoring Event Listeners */
-    document.getElementById("c-bil-add").onclick = add_checking_bill;
-    
-    var c_input_elems = document.getElementsByClassName("c-input");
-    for (let i = 0; i < c_input_elems.length; i++) {
-        c_input_elems[i].addEventListener("change", update_savings_transfer);
-    }
+    reset_table("c", output_html);
 }
 
 function update_savings_transfer() {
@@ -103,34 +121,7 @@ function add_savings_bucket() {
         }
     }
 
-    /* Saving Input Values */
-    var s_input_elems = document.getElementsByClassName("s-input");
-    var s_input_ids = [];
-    var s_input_vals = [];
-    for (let i = 0; i < s_input_elems.length; i++) {
-        s_input_ids.push(s_input_elems[i].id);
-        s_input_vals.push(s_input_elems[i].value);
-    }
-    
-    /* Reseting to New HTML */
-    document.getElementById("s-table").innerHTML = output_html;
-
-    /* Restoring Original Input Values */
-    for (let i = 0; i < s_input_ids.length; i++) {
-        document.getElementById(s_input_ids[i]).value = s_input_vals[i];
-    }
-    
-    /* Restoring Event Listeners */
-    document.getElementById("s-bkt-add").onclick = add_savings_bucket;
-    document.getElementById("s-lon-add").onclick = add_loan;
-    document.getElementById("s-inv-add").onclick = add_investment;
-    
-    /*
-    var s_input_elems = document.getElementsByClassName("s-input");
-    for (let i = 0; i < s_input_elems.length; i++) {
-        s_input_elems[i].addEventListener("change", update_savings_transfer);
-    }
-    */
+    reset_table("s", output_html);
 }
 
 function add_loan() {
@@ -161,34 +152,7 @@ function add_loan() {
         }
     }
 
-    /* Saving Input Values */
-    var s_input_elems = document.getElementsByClassName("s-input");
-    var s_input_ids = [];
-    var s_input_vals = [];
-    for (let i = 0; i < s_input_elems.length; i++) {
-        s_input_ids.push(s_input_elems[i].id);
-        s_input_vals.push(s_input_elems[i].value);
-    }
-    
-    /* Reseting to New HTML */
-    document.getElementById("s-table").innerHTML = output_html;
-
-    /* Restoring Original Input Values */
-    for (let i = 0; i < s_input_ids.length; i++) {
-        document.getElementById(s_input_ids[i]).value = s_input_vals[i];
-    }
-    
-    /* Restoring Event Listeners */
-    document.getElementById("s-bkt-add").onclick = add_savings_bucket;
-    document.getElementById("s-lon-add").onclick = add_loan;
-    document.getElementById("s-inv-add").onclick = add_investment;
-    
-    /*
-    var s_input_elems = document.getElementsByClassName("s-input");
-    for (let i = 0; i < s_input_elems.length; i++) {
-        s_input_elems[i].addEventListener("change", update_savings_transfer);
-    }
-    */
+    reset_table("s", output_html);
 }
 
 function add_investment() {
@@ -218,35 +182,8 @@ function add_investment() {
             output_html += "</tr>";
         }
     }
-
-    /* Saving Input Values */
-    var s_input_elems = document.getElementsByClassName("s-input");
-    var s_input_ids = [];
-    var s_input_vals = [];
-    for (let i = 0; i < s_input_elems.length; i++) {
-        s_input_ids.push(s_input_elems[i].id);
-        s_input_vals.push(s_input_elems[i].value);
-    }
     
-    /* Reseting to New HTML */
-    document.getElementById("s-table").innerHTML = output_html;
-
-    /* Restoring Original Input Values */
-    for (let i = 0; i < s_input_ids.length; i++) {
-        document.getElementById(s_input_ids[i]).value = s_input_vals[i];
-    }
-    
-    /* Restoring Event Listeners */
-    document.getElementById("s-bkt-add").onclick = add_savings_bucket;
-    document.getElementById("s-lon-add").onclick = add_loan;
-    document.getElementById("s-inv-add").onclick = add_investment;
-    
-    /*
-    var s_input_elems = document.getElementsByClassName("s-input");
-    for (let i = 0; i < s_input_elems.length; i++) {
-        s_input_elems[i].addEventListener("change", update_savings_transfer);
-    }
-    */
+    reset_table("s", output_html);
 }
 
 /* Setting Original Event Listeners */
