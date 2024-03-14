@@ -122,6 +122,8 @@ function add_savings_bucket() {
     
     /* Restoring Event Listeners */
     document.getElementById("s-bkt-add").onclick = add_savings_bucket;
+    document.getElementById("s-lon-add").onclick = add_loan;
+    document.getElementById("s-inv-add").onclick = add_investment;
     
     /*
     var s_input_elems = document.getElementsByClassName("s-input");
@@ -177,7 +179,9 @@ function add_loan() {
     }
     
     /* Restoring Event Listeners */
+    document.getElementById("s-bkt-add").onclick = add_savings_bucket;
     document.getElementById("s-lon-add").onclick = add_loan;
+    document.getElementById("s-inv-add").onclick = add_investment;
     
     /*
     var s_input_elems = document.getElementsByClassName("s-input");
@@ -233,6 +237,8 @@ function add_investment() {
     }
     
     /* Restoring Event Listeners */
+    document.getElementById("s-bkt-add").onclick = add_savings_bucket;
+    document.getElementById("s-lon-add").onclick = add_loan;
     document.getElementById("s-inv-add").onclick = add_investment;
     
     /*
@@ -253,7 +259,5 @@ for (let i = 0; i < c_input_elems.length; i++) {
 }
 
 document.getElementById("s-bkt-add").onclick = add_savings_bucket;
-
 document.getElementById("s-lon-add").onclick = add_loan;
-
 document.getElementById("s-inv-add").onclick = add_investment;
