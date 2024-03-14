@@ -144,7 +144,7 @@ function add_loan() {
             output_html += "\t<td><h4>Loan #" + (tot_loans+1).toString() + "</h4></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-bal-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-rat-" + tot_loans.toString() + "\"></td>\n";
-            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-lim-" + tot_loans.toString() + "\"></td>\n";
+            output_html += "\t<td></td>\n";
             output_html += "\t<td><p id=\"s-lon-rec-" + tot_loans.toString() + "\">0</p></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-act-" + tot_loans.toString() + "\"></td>\n";
             output_html += "</tr>";
@@ -187,6 +187,62 @@ function add_loan() {
     */
 }
 
+function add_investment() {
+    var table_str = document.getElementById("s-table").innerHTML;
+    const table_row_str = table_str.split("</tr>");
+
+    /* Creating the Output HTML */
+    var tot_invs = 0;
+    var output_html = "";
+    for (let i = 0; i < table_row_str.length; i++) {
+        if (table_row_str[i].includes("s-inv-add")) {
+            output_html += "\n<tr>\n";
+            output_html += "\t<td><h4>Investment #" + (tot_invs+1).toString() + "</h4></td>\n";
+            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-bal-" + tot_invs.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-rat-" + tot_invs.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-lim-" + tot_invs.toString() + "\"></td>\n";
+            output_html += "\t<td><p id=\"s-inv-rec-" + tot_invs.toString() + "\">0</p></td>\n";
+            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-act-" + tot_invs.toString() + "\"></td>\n";
+            output_html += "</tr>";
+        }
+        else if (table_row_str[i].includes("s-inv")) {
+            tot_invs += 1;
+        }
+        
+        output_html += table_row_str[i];
+        if (i < table_row_str.length - 1) {
+            output_html += "</tr>";
+        }
+    }
+
+    /* Saving Input Values */
+    var s_input_elems = document.getElementsByClassName("s-input");
+    var s_input_ids = [];
+    var s_input_vals = [];
+    for (let i = 0; i < s_input_elems.length; i++) {
+        s_input_ids.push(s_input_elems[i].id);
+        s_input_vals.push(s_input_elems[i].value);
+    }
+    
+    /* Reseting to New HTML */
+    document.getElementById("s-table").innerHTML = output_html;
+
+    /* Restoring Original Input Values */
+    for (let i = 0; i < s_input_ids.length; i++) {
+        document.getElementById(s_input_ids[i]).value = s_input_vals[i];
+    }
+    
+    /* Restoring Event Listeners */
+    document.getElementById("s-inv-add").onclick = add_investment;
+    
+    /*
+    var s_input_elems = document.getElementsByClassName("s-input");
+    for (let i = 0; i < s_input_elems.length; i++) {
+        s_input_elems[i].addEventListener("change", update_savings_transfer);
+    }
+    */
+}
+
 /* Setting Original Event Listeners */
 
 document.getElementById("c-bil-add").onclick = add_checking_bill;
@@ -199,3 +255,5 @@ for (let i = 0; i < c_input_elems.length; i++) {
 document.getElementById("s-bkt-add").onclick = add_savings_bucket;
 
 document.getElementById("s-lon-add").onclick = add_loan;
+
+document.getElementById("s-inv-add").onclick = add_investment;
