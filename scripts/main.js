@@ -279,9 +279,17 @@ function update_savings() {
             var new_tran = 0;
             if (!isNaN(s_info[type][i]["lim"])) {
                 new_tran = Math.min((s_info[type][i]["lim"] - s_info[type][i]["bal"]), ((s_info[type][i]["rat"] / tot_rat) * tot_funds));
+
+                if (new_tran != (s_info[type][i]["lim"] - s_info[type][i]["bal"])) {
+                    continue;
+                }
             }
             else if (type == "lon") {
                 new_tran = Math.min(s_info[type][i]["bal"], ((s_info[type][i]["rat"] / tot_rat) * tot_funds));
+
+                if (new_tran != s_info[type][i]["bal"]) {
+                    continue;
+                }
             }
             else {
                 continue;
