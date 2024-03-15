@@ -83,7 +83,6 @@ function add_bucket() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-rat-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-lim-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-tran-" + tot_bkts.toString() + "\"></td>\n";
-            output_html += "\t<td><p id=\"s-bkt-tran-" + tot_bkts.toString() + "\">0</p></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-bkt")) {
@@ -185,6 +184,33 @@ function update_checking() {
 }
 
 function update_savings() {
+    var c_tran = parseFloat(document.getElementById("c-tran").innerHTML)
+    var s_info = {
+        'bkt': [],
+        'lon': [],
+        'inv': []
+    }
+
+    var s_input_elems = document.getElementsByClassName("s-input");
+    for (let i = 0; i < s_input_elems.length; i++) {
+        type = s_input_elems[i].id.split('-')[1]
+        val = s_input_elems[i].id.split('-')[2]
+        pos = parseInt(s_input_elems[i].id.split('-')[3])
+
+        for (let j = 0; j < (pos + 1 - s_info[type].length); j++) {
+            s_info[type].push({
+                'bal': NaN,
+                'rat': NaN,
+                'lim': NaN,
+                'tran': NaN
+            })
+        }
+
+        s_info[type][pos][val] = parseFloat(s_input_elems[i].value)
+    }
+
+    console.log(c_tran)
+    console.log(s_info)
 }
 
 /* Setting Original Event Listeners */
