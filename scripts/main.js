@@ -209,7 +209,12 @@ function update_savings() {
             })
         }
 
-        s_info[type][pos][val] = parseFloat(s_input_elems[i].value)
+        if (val == "tran") {
+            continue;
+        }
+        else {
+            s_info[type][pos][val] = parseFloat(s_input_elems[i].value)
+        }
     }
 
     if (isNaN(c_tran) || isNaN(s_bal)) {
@@ -228,10 +233,6 @@ function update_savings() {
             }
         }
     }
-
-    console.log(c_tran);
-    console.log(s_bal);
-    console.log(s_info);
 
     /* TODO: Add Lock Logic for Maintaining Prev Transfer Values */
 
@@ -256,9 +257,13 @@ function update_savings() {
             if (!isNaN(s_info[type][i]["lim"])) {
                 new_tran = Math.min((s_info[type][i]["lim"] - s_info[type][i]["bal"]), ((s_info[type][i]["rat"] / tot_rat) * tot_funds))
             }
+            else if (type == "lon") {
+                new_tran = Math.min(s_info[type][i]["bal"], ((s_info[type][i]["rat"] / tot_rat) * tot_funds))
+            }
             else {
                 new_tran = (s_info[type][i]["rat"] / tot_rat) * tot_funds
             }
+            new_tran = new_tran.toFixed(2)
             document.getElementById("s-" + type + "-" + val + "-" + i.toString()).value = new_tran
             s_info[type][i]["tran"] = new_tran
             tot_funds -= new_tran
