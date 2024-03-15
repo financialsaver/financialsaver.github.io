@@ -185,6 +185,7 @@ function update_checking() {
 
 function update_savings() {
     var c_tran = parseFloat(document.getElementById("c-tran").innerHTML)
+    var s_bal = parseFloat(document.getElementById("s-bal").value)
     var s_info = {
         'bkt': [],
         'lon': [],
@@ -193,9 +194,11 @@ function update_savings() {
 
     var s_input_elems = document.getElementsByClassName("s-input");
     for (let i = 0; i < s_input_elems.length; i++) {
-        type = s_input_elems[i].id.split('-')[1]
-        val = s_input_elems[i].id.split('-')[2]
-        pos = parseInt(s_input_elems[i].id.split('-')[3])
+        var type = s_input_elems[i].id.split('-')[1];
+        var val = s_input_elems[i].id.split('-')[2];
+        var pos = parseInt(s_input_elems[i].id.split('-')[3]);
+
+        if (type == "bal") {continue;}
 
         for (let j = 0; j < (pos + 1 - s_info[type].length); j++) {
             s_info[type].push({
@@ -209,7 +212,21 @@ function update_savings() {
         s_info[type][pos][val] = parseFloat(s_input_elems[i].value)
     }
 
+    if (isNaN(c_tran) || isNaN(s_bal)) {
+        return;
+    }
+    for (var type in s_info) {
+        for (let i = 0; i < s_info[type].length; i++) {
+            for (var val in s_info[type][i]) {
+                if (type != "tran" && isNaN(s_info[type][i][val])) {
+                    return;
+                }
+            }
+        }
+    }
+
     console.log(c_tran)
+    console.log(s_bal)
     console.log(s_info)
 }
 
