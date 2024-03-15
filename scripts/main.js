@@ -114,7 +114,7 @@ function add_loan() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-rat-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-tran-" + tot_loans.toString() + "\"></td>\n";
-            output_html += "\t<td><input type=\"checkbox\" class=\"s-input\" id=\"s-lon-lock-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" class=\"s-input\" id=\"s-lon-lock-" + tot_loans.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-lon")) {
@@ -145,7 +145,7 @@ function add_investment() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-rat-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-lim-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-tran-" + tot_invs.toString() + "\"></td>\n";
-            output_html += "\t<td><input type=\"checkbox\" class=\"s-input\" id=\"s-inv-lock-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" class=\"s-input\" id=\"s-inv-lock-" + tot_invs.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-inv")) {
@@ -259,9 +259,12 @@ function update_savings() {
         for (let i = 0; i < s_info[type].length; i++) {
             if (!isNaN(s_info[type][i]["tran"])) {
                 tot_funds -= s_info[type][i]["tran"];
-                continue;
             }
+        }
+    }
 
+    for (var type in s_info) {
+        for (let i = 0; i < s_info[type].length; i++) {
             var tot_rat = 0;
             for (var t in s_info) {
                 for (let j = 0; j < s_info[t].length; j++) {
