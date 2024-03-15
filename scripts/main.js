@@ -83,7 +83,7 @@ function add_bucket() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-rat-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-lim-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-tran-" + tot_bkts.toString() + "\"></td>\n";
-            output_html += "\t<td><input type=\"checkbox\" id=\"s-bkt-lock-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" class=\"s-input\" id=\"s-bkt-lock-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-bkt")) {
@@ -114,7 +114,7 @@ function add_loan() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-rat-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-tran-" + tot_loans.toString() + "\"></td>\n";
-            output_html += "\t<td><input type=\"checkbox\" id=\"s-lon-lock-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" class=\"s-input\" id=\"s-lon-lock-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-lon")) {
@@ -145,7 +145,7 @@ function add_investment() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-rat-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-lim-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-tran-" + tot_invs.toString() + "\"></td>\n";
-            output_html += "\t<td><input type=\"checkbox\" id=\"s-inv-lock-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" class=\"s-input\" id=\"s-inv-lock-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-inv")) {
@@ -241,7 +241,6 @@ function update_savings() {
                     continue;
                 }
                 else if (val != "tran" && isNaN(s_info[type][i][val])) {
-                    console.log(s_info);
                     return;
                 }
             }
@@ -283,7 +282,7 @@ function update_savings() {
                 new_tran = (s_info[type][i]["rat"] / tot_rat) * tot_funds;
             }
             new_tran = new_tran.toFixed(2);
-            document.getElementById("s-" + type + "-" + val + "-" + i.toString()).value = new_tran;
+            document.getElementById("s-" + type + "-tran-" + i.toString()).value = new_tran;
             s_info[type][i]["tran"] = new_tran;
             tot_funds -= new_tran;
         }
