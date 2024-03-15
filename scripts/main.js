@@ -218,16 +218,40 @@ function update_savings() {
     for (var type in s_info) {
         for (let i = 0; i < s_info[type].length; i++) {
             for (var val in s_info[type][i]) {
-                if (type != "tran" && isNaN(s_info[type][i][val])) {
+                if (val != "tran" && isNaN(s_info[type][i][val])) {
                     return;
                 }
             }
         }
     }
 
-    console.log(c_tran)
-    console.log(s_bal)
-    console.log(s_info)
+    console.log(c_tran);
+    console.log(s_bal);
+    console.log(s_info);
+
+    /* TODO: Add Lock Logic for Maintaining Prev Transfer Values */
+
+    var tot_bkt_bal = 0;
+    for (let i = 0; i < s_info['bkt'].length; i++) {
+        tot_bkt_bal += s_info['bkt'][i]['bal']
+    }
+    var tot_funds = c_tran + (s_bal - tot_bkt_bal);
+
+    for (var type in s_info) {
+        for (let i = 0; i < s_info[type].length; i++) {
+            var tot_rat = 0
+            for (var t in s_info) {
+                for (let j = 0; j < s_info[type].length; j++) {
+                    if (isNaN(s_info[t][j]["tran"])) {
+                        tot_rat += s_info[t][j]["rat"]
+                    }
+                }
+            }
+
+            s_info[type][i]["tran"] = Math.max((s_info[type][i]["lim"] - s_info[type][i]["bal"]), ((s_info[type][i]["rat"] / tot_rat) * tot_funds))
+            document.getElementById("s-" + type + "-" + val + "-" + i.toString()).value = s_info[type][i]["tran"]
+        }
+    }
 }
 
 /* Setting Original Event Listeners */
