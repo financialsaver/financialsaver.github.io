@@ -26,14 +26,14 @@ function reset_table(type, html) {
             input_elems[i].addEventListener("change", update_checking);
         }
 
-        document.getElementById("c-bil-add").onclick = add_checking_bill;
+        document.getElementById("c-bil-add").onclick = add_bill;
     }
     else if (type == "s") {
         for (let i = 0; i < input_elems.length; i++) {
             input_elems[i].addEventListener("change", update_savings);
         }
 
-        document.getElementById("s-bkt-add").onclick = add_savings_bucket;
+        document.getElementById("s-bkt-add").onclick = add_bucket;
         document.getElementById("s-lon-add").onclick = add_loan;
         document.getElementById("s-inv-add").onclick = add_investment;
     }
@@ -41,7 +41,7 @@ function reset_table(type, html) {
 
 /* Defining Event Functions */
 
-function add_checking_bill() {
+function add_bill() {
     var table_str = document.getElementById("c-table").innerHTML;
     const table_row_str = table_str.split("</tr>");
 
@@ -68,7 +68,7 @@ function add_checking_bill() {
     reset_table("c", output_html);
 }
 
-function add_savings_bucket() {
+function add_bucket() {
     var table_str = document.getElementById("s-table").innerHTML;
     const table_row_str = table_str.split("</tr>");
 
@@ -82,6 +82,7 @@ function add_savings_bucket() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-bal-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-rat-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-lim-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-tran-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><p id=\"s-bkt-tran-" + tot_bkts.toString() + "\">0</p></td>\n";
             output_html += "</tr>";
         }
@@ -112,7 +113,7 @@ function add_loan() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-bal-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-rat-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td></td>\n";
-            output_html += "\t<td><p id=\"s-lon-tran-" + tot_loans.toString() + "\">0</p></td>\n";
+            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-tran-" + tot_loans.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-lon")) {
@@ -142,7 +143,7 @@ function add_investment() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-bal-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-rat-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-lim-" + tot_invs.toString() + "\"></td>\n";
-            output_html += "\t<td><p id=\"s-inv-tran-" + tot_invs.toString() + "\">0</p></td>\n";
+            output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-tran-" + tot_invs.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-inv")) {
@@ -188,7 +189,7 @@ function update_savings() {
 
 /* Setting Original Event Listeners */
 
-document.getElementById("c-bil-add").onclick = add_checking_bill;
+document.getElementById("c-bil-add").onclick = add_bill;
 
 var c_input_elems = document.getElementsByClassName("c-input");
 for (let i = 0; i < c_input_elems.length; i++) {
@@ -197,7 +198,7 @@ for (let i = 0; i < c_input_elems.length; i++) {
 
 document.getElementById("c-tran").addEventListener("change", update_savings);
 
-document.getElementById("s-bkt-add").onclick = add_savings_bucket;
+document.getElementById("s-bkt-add").onclick = add_bucket;
 document.getElementById("s-lon-add").onclick = add_loan;
 document.getElementById("s-inv-add").onclick = add_investment;
 
