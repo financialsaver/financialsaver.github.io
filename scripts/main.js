@@ -247,8 +247,6 @@ function update_savings() {
         }
     }
 
-    /* TODO: Add Lock Logic for Maintaining Prev Transfer Values */
-
     var tot_bkt_bal = 0;
     for (let i = 0; i < s_info['bkt'].length; i++) {
         tot_bkt_bal += s_info['bkt'][i]['bal'];
@@ -265,6 +263,10 @@ function update_savings() {
 
     for (var type in s_info) {
         for (let i = 0; i < s_info[type].length; i++) {
+            if (!isNaN(s_info[type][i]["tran"])) {
+                continue;
+            }
+
             var tot_rat = 0;
             for (var t in s_info) {
                 for (let j = 0; j < s_info[t].length; j++) {
@@ -282,8 +284,31 @@ function update_savings() {
                 new_tran = Math.min(s_info[type][i]["bal"], ((s_info[type][i]["rat"] / tot_rat) * tot_funds));
             }
             else {
-                new_tran = (s_info[type][i]["rat"] / tot_rat) * tot_funds;
+                continue;
             }
+            new_tran = new_tran.toFixed(2);
+            document.getElementById("s-" + type + "-tran-" + i.toString()).value = new_tran;
+            s_info[type][i]["tran"] = new_tran;
+            tot_funds -= new_tran;
+        }
+    }
+
+    for (var type in s_info) {
+        for (let i = 0; i < s_info[type].length; i++) {
+            if (!isNaN(s_info[type][i]["tran"])) {
+                continue;
+            }
+
+            var tot_rat = 0;
+            for (var t in s_info) {
+                for (let j = 0; j < s_info[t].length; j++) {
+                    if (isNaN(s_info[t][j]["tran"])) {
+                        tot_rat += s_info[t][j]["rat"];
+                    }
+                }
+            }
+
+            var new_tran = (s_info[type][i]["rat"] / tot_rat) * tot_funds;
             new_tran = new_tran.toFixed(2);
             document.getElementById("s-" + type + "-tran-" + i.toString()).value = new_tran;
             s_info[type][i]["tran"] = new_tran;
