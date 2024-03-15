@@ -83,6 +83,7 @@ function add_bucket() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-rat-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-lim-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-bkt-tran-" + tot_bkts.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" id=\"s-bkt-lock-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-bkt")) {
@@ -113,6 +114,7 @@ function add_loan() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-rat-" + tot_loans.toString() + "\"></td>\n";
             output_html += "\t<td></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-lon-tran-" + tot_loans.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" id=\"s-lon-lock-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-lon")) {
@@ -143,6 +145,7 @@ function add_investment() {
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-rat-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-lim-" + tot_invs.toString() + "\"></td>\n";
             output_html += "\t<td><input type=\"text\" class=\"s-input\" id=\"s-inv-tran-" + tot_invs.toString() + "\"></td>\n";
+            output_html += "\t<td><input type=\"checkbox\" id=\"s-inv-lock-" + tot_bkts.toString() + "\"></td>\n";
             output_html += "</tr>";
         }
         else if (table_row_str[i].includes("s-inv")) {
@@ -184,13 +187,13 @@ function update_checking() {
 }
 
 function update_savings() {
-    var c_tran = parseFloat(document.getElementById("c-tran").innerHTML)
-    var s_bal = parseFloat(document.getElementById("s-bal").value)
+    var c_tran = parseFloat(document.getElementById("c-tran").innerHTML);
+    var s_bal = parseFloat(document.getElementById("s-bal").value);
     var s_info = {
         'bkt': [],
         'lon': [],
         'inv': []
-    }
+    };
 
     var s_input_elems = document.getElementsByClassName("s-input");
     for (let i = 0; i < s_input_elems.length; i++) {
@@ -205,15 +208,26 @@ function update_savings() {
                 'bal': NaN,
                 'rat': NaN,
                 'lim': NaN,
-                'tran': NaN
-            })
+                'tran': NaN,
+                'lock': false
+            });
         }
 
-        if (val == "tran") {
-            continue;
+        if (val == "lock") {
+            s_info[type][pos][val] = s_input_elems[i].checked;
         }
         else {
-            s_info[type][pos][val] = parseFloat(s_input_elems[i].value)
+            s_info[type][pos][val] = parseFloat(s_input_elems[i].value);
+        }
+    }
+
+    for (let i = 0; i < s_input_elems.length; i++) {
+        var type = s_input_elems[i].id.split('-')[1];
+        var val = s_input_elems[i].id.split('-')[2];
+        var pos = parseInt(s_input_elems[i].id.split('-')[3]);
+
+        if (val == "tran" && !s_info[type][pos]["lock"]) {
+            s_info[type][pos][val] = NaN;
         }
     }
 
@@ -227,7 +241,7 @@ function update_savings() {
                     continue;
                 }
                 else if (val != "tran" && isNaN(s_info[type][i][val])) {
-                    console.log(s_info)
+                    console.log(s_info);
                     return;
                 }
             }
@@ -238,35 +252,40 @@ function update_savings() {
 
     var tot_bkt_bal = 0;
     for (let i = 0; i < s_info['bkt'].length; i++) {
-        tot_bkt_bal += s_info['bkt'][i]['bal']
+        tot_bkt_bal += s_info['bkt'][i]['bal'];
     }
     var tot_funds = c_tran + (s_bal - tot_bkt_bal);
 
     for (var type in s_info) {
         for (let i = 0; i < s_info[type].length; i++) {
-            var tot_rat = 0
+            if (!isNaN(s_info[type][i]["tran"])) {
+                tot_funds -= s_info[type][i]["tran"];
+                continue;
+            }
+
+            var tot_rat = 0;
             for (var t in s_info) {
                 for (let j = 0; j < s_info[t].length; j++) {
                     if (isNaN(s_info[t][j]["tran"])) {
-                        tot_rat += s_info[t][j]["rat"]
+                        tot_rat += s_info[t][j]["rat"];
                     }
                 }
             }
 
             var new_tran = 0;
             if (!isNaN(s_info[type][i]["lim"])) {
-                new_tran = Math.min((s_info[type][i]["lim"] - s_info[type][i]["bal"]), ((s_info[type][i]["rat"] / tot_rat) * tot_funds))
+                new_tran = Math.min((s_info[type][i]["lim"] - s_info[type][i]["bal"]), ((s_info[type][i]["rat"] / tot_rat) * tot_funds));
             }
             else if (type == "lon") {
-                new_tran = Math.min(s_info[type][i]["bal"], ((s_info[type][i]["rat"] / tot_rat) * tot_funds))
+                new_tran = Math.min(s_info[type][i]["bal"], ((s_info[type][i]["rat"] / tot_rat) * tot_funds));
             }
             else {
-                new_tran = (s_info[type][i]["rat"] / tot_rat) * tot_funds
+                new_tran = (s_info[type][i]["rat"] / tot_rat) * tot_funds;
             }
-            new_tran = new_tran.toFixed(2)
-            document.getElementById("s-" + type + "-" + val + "-" + i.toString()).value = new_tran
-            s_info[type][i]["tran"] = new_tran
-            tot_funds -= new_tran
+            new_tran = new_tran.toFixed(2);
+            document.getElementById("s-" + type + "-" + val + "-" + i.toString()).value = new_tran;
+            s_info[type][i]["tran"] = new_tran;
+            tot_funds -= new_tran;
         }
     }
 }
